@@ -92,31 +92,11 @@ fn main() -> Result<()> {
             for i in start..=end {
                 let s = i.to_string();
                 let bytes = s.as_bytes();
-                let len = bytes.len();
-                // max repeat n time, min repeat 1 time
-                for d in 1..=(len / 2) {
-                    // repeat pattern length d * t = len
-                    if len % d != 0 {
-                        continue;
-                    }
-                    let mut is_match = true;
-                    for index in d..len {
-                        // 123 123 123
-                        // ^
-                        //     ^
-                        //         ^
-                        if bytes[index] != bytes[index - d] {
-                            is_match = false;
-                            break;
-                        }
-                    }
-                    if is_match {
-                        answer.push(i);
-                        // no need, but i want
-                        break;
-                    }
+                if check(bytes) {
+                    answer.push(i);
                 }
             }
+
             buf.clear();
         }
         println!("{:?}", answer);
@@ -134,8 +114,36 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+fn check(bytes: &[u8]) -> bool {
+    let len = bytes.len();
+    for d in 1..=(len / 2) {
+        // repeat pattern length d * t = len
+        if !len.is_multiple_of(d) {
+            continue;
+        }
+        let mut is_match = true;
+        for index in (d..len) {
+            // d = 3
+            // 123 123 123
+            // ^
+            //     ^
+            //         ^
+            if bytes[index] != bytes[index - d] {
+                is_match = false;
+                break;
+            }
+        }
+        if is_match {
+            return true;
+        }
+    }
+    false
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::check;
+
     #[test]
     fn test_left_bit() {
         for step in 0..4 {
@@ -155,5 +163,11 @@ mod tests {
             None => panic!("panic"),
         };
         println!("a={a}");
+    }
+
+    #[test]
+    fn test_check() {
+        assert!(check(b"1212"));
+        assert!(check(b"111111111"));
     }
 }
