@@ -118,7 +118,7 @@ fn main() -> Result<()> {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use std::ops::Div;
 
     #[test]
