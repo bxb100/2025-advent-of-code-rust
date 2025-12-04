@@ -1,8 +1,7 @@
 use adv_code_2025::*;
 use anyhow::*;
 use code_timing_macros::time_snippet;
-use const_format::{concatcp, str_get};
-use std::collections::HashSet;
+use const_format::concatcp;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -90,16 +89,19 @@ fn main() -> Result<()> {
             let end: usize = b.parse()?;
 
             for i in start..=end {
-                let s = i.to_string();
-                let bytes = s.as_bytes();
-                if check(bytes) {
+                // let s = i.to_string();
+                // let bytes = s.as_bytes();
+                // if check(bytes) {
+                //     answer.push(i);
+                // }
+                if check_leetcode_459(i.to_string()) {
                     answer.push(i);
                 }
             }
 
             buf.clear();
         }
-        println!("{:?}", answer);
+        // println!("{:?}", answer);
         Ok(answer.iter().sum())
     }
 
@@ -112,6 +114,13 @@ fn main() -> Result<()> {
     //endregion
 
     Ok(())
+}
+
+// see https://www.reddit.com/r/adventofcode/comments/1pbzqcx/2025_day_2_solutions/
+#[inline(always)]
+fn check_leetcode_459(s: String) -> bool {
+    let new_s = s.repeat(2);
+    new_s[1..new_s.len() - 1].contains(&s)
 }
 
 fn check(bytes: &[u8]) -> bool {
@@ -142,7 +151,7 @@ fn check(bytes: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::check;
+    use crate::{check, check_leetcode_459};
 
     #[test]
     fn test_left_bit() {
@@ -169,5 +178,7 @@ mod tests {
     fn test_check() {
         assert!(check(b"1212"));
         assert!(check(b"111111111"));
+
+        assert!(check_leetcode_459("1212".to_string()));
     }
 }
