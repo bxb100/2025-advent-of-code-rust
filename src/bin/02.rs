@@ -149,9 +149,25 @@ fn check(bytes: &[u8]) -> bool {
     false
 }
 
+fn pow10(exp: u32) -> u128 {
+    10u128.pow(exp)
+}
+
+fn calculate_multiplier(seed_len: u32, num_repeats: u32) -> u128 {
+    (0..num_repeats).fold(0u128, |acc, i| acc + pow10(i * seed_len))
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{check, check_leetcode_459};
+    use crate::*;
+
+    #[test]
+    fn test_multiplier() {
+        let seed_len = 2;
+        let num_repeats = 3;
+        let multiplier = calculate_multiplier(seed_len, num_repeats);
+        println!("{:?}", multiplier);
+    }
 
     #[test]
     fn test_left_bit() {

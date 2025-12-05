@@ -1,12 +1,10 @@
-use std::cmp::max;
 use adv_code_2025::*;
 use anyhow::*;
 use code_timing_macros::time_snippet;
 use const_format::concatcp;
-use std::collections::HashSet;
+use std::cmp::max;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::mem::swap;
 
 const DAY: &str = "05";
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -92,7 +90,7 @@ fn main() -> Result<()> {
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
         let mut lines = reader.lines();
         let mut ranges: Vec<Range> = vec![];
-        while let Some(x) = lines.next() {
+        for x in lines {
             let x = x?;
             if x.trim().is_empty() {
                 break;
@@ -110,25 +108,17 @@ fn main() -> Result<()> {
 
         ranges.sort_by_key(|r| r.start);
 
-        let mut merged: Vec<&mut Range> = Vec::new();
-
-        let mut first = ranges.remove(0);
-
-        merged.push(&mut first);
-
-        for current in ranges.iter_mut() {
-            let last = merged.last_mut().unwrap();
-
-            if current.start <= last.end {
-                last.end = max(last.end, current.end);
-            } else {
-                merged.push(current);
+        let mut max_i = 0;
+        let mut ans = 0;
+        for Range { start, end } in ranges {
+            // the max_i means the previous end index add 1, so current end could be equaled
+            if end >= max_i {
+                println!("end: {end}, start: {}", max(start, max_i));
+                ans += end - max(start, max_i) + 1;
+                // +1 because the end has been added
+                max_i = end + 1;
             }
         }
-
-        // println!("{merged:?}");
-
-        let ans = merged.iter().map(|r| r.count()).sum();
 
         Ok(ans)
     }
