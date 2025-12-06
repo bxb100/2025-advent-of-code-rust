@@ -4,7 +4,7 @@ use code_timing_macros::time_snippet;
 use const_format::concatcp;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::ops::{Add, Mul};
+use std::ops::Mul;
 
 const DAY: &str = "03";
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -48,18 +48,18 @@ fn main() -> Result<()> {
     println!("\n=== Part 2 ===");
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
-            let mut answer = 0;
+        let mut answer = 0;
 
-            for line in reader.lines() {
-                let line = line?;
-                if line.trim().is_empty() {
-                    continue;
-                }
-                let jolts = find_maximum_jolts(line.trim().as_bytes(), 12);
-                answer += jolts as usize;
+        for line in reader.lines() {
+            let line = line?;
+            if line.trim().is_empty() {
+                continue;
             }
+            let jolts = find_maximum_jolts(line.trim().as_bytes(), 12);
+            answer += jolts as usize;
+        }
 
-            Ok(answer)
+        Ok(answer)
     }
 
     assert_eq!(3121910778619, part2(BufReader::new(TEST.as_bytes()))?);

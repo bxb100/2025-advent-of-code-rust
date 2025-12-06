@@ -131,7 +131,7 @@ fn check(bytes: &[u8]) -> bool {
             continue;
         }
         let mut is_match = true;
-        for index in (d..len) {
+        for index in d..len {
             // d = 3
             // 123 123 123
             // ^

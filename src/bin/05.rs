@@ -29,6 +29,7 @@ struct Range {
     end: usize,
 }
 
+#[allow(dead_code)]
 impl Range {
     fn is_within(&self, o: usize) -> bool {
         o >= self.start && o <= self.end
@@ -88,7 +89,7 @@ fn main() -> Result<()> {
     println!("\n=== Part 2 ===");
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
-        let mut lines = reader.lines();
+        let lines = reader.lines();
         let mut ranges: Vec<Range> = vec![];
         for x in lines {
             let x = x?;
