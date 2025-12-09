@@ -69,12 +69,13 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-impl Point {
-    fn parse(s: String) -> Result<Point> {
+impl From<String> for Point {
+    fn from(s: String) -> Self {
         let coords: Vec<i64> = s
             .split(',')
             .map(|part| part.trim().parse::<i64>())
-            .collect::<Result<Vec<_>, _>>()?;
+            .collect::<Result<Vec<_>, _>>()
+            .unwrap();
 
         assert_eq!(
             coords.len(),
@@ -83,11 +84,11 @@ impl Point {
             coords.len()
         );
 
-        Ok(Point {
+        Point {
             x: coords[0],
             y: coords[1],
             z: coords[2],
-        })
+        }
     }
 }
 
@@ -96,8 +97,8 @@ fn solve<R: BufRead>(input: R, conj_all: bool) -> Result<usize> {
         .lines()
         .map(|line| line.unwrap())
         .filter(|line| !line.is_empty())
-        .map(Point::parse)
-        .collect::<Result<Vec<_>, _>>()?;
+        .map(Point::from)
+        .collect();
 
     let n = points.len();
     let mut edges = Vec::new();
@@ -185,6 +186,7 @@ struct DSU {
     size: Vec<usize>,
 }
 
+// https://zh.wikipedia.org/wiki/%E5%B9%B6%E6%9F%A5%E9%9B%86
 impl DSU {
     fn new(n: usize) -> Self {
         DSU {
@@ -195,10 +197,12 @@ impl DSU {
 
     // 查找根节点
     fn find(&mut self, i: usize) -> usize {
-        if self.parent[i] != i {
+        if self.parent[i] == i {
+            i
+        } else {
             self.parent[i] = self.find(self.parent[i]);
+            self.parent[i]
         }
-        self.parent[i]
     }
 
     fn union(&mut self, i: usize, j: usize) -> bool {
