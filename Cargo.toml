@@ -10,8 +10,10 @@ const_format = "0.2.35"
 
 # Additional recommended dependencies
 itertools = "0.14.0"
+rayon = "1.11.0"
 regex = "1.12.2"
 z3 = { version = "0", features = ["gh-release"] }
+
 
 [features]
 tracing = []
