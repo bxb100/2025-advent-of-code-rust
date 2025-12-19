@@ -34,7 +34,11 @@ fn main() -> Result<()> {
     println!("=== Part 1 ===");
 
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
-        let data = reader.lines().map(|line| line.unwrap()).filter(|line| !line.trim().is_empty()).collect::<Vec<String>>();
+        let data = reader
+            .lines()
+            .map(|line| line.unwrap())
+            .filter(|line| !line.trim().is_empty())
+            .collect::<Vec<String>>();
         let answer = solve(data, false);
         Ok(answer)
     }
@@ -50,7 +54,11 @@ fn main() -> Result<()> {
     println!("\n=== Part 2 ===");
 
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
-        let data = reader.lines().map(|line| line.unwrap()).filter(|line| !line.trim().is_empty()).collect::<Vec<String>>();
+        let data = reader
+            .lines()
+            .map(|line| line.unwrap())
+            .filter(|line| !line.trim().is_empty())
+            .collect::<Vec<String>>();
         let answer = solve(data, true);
         Ok(answer)
     }

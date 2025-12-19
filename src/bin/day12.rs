@@ -205,19 +205,15 @@ fn dfs(matrix: &Matrix, idx: usize, values: &mut [usize], min: &mut usize, max: 
                 for (i, v) in values.iter().enumerate() {
                     let mut other = vec![0f64; matrix.cols + 1];
                     other[matrix.independents[i]] = 1f64;
-                    other[matrix.cols ] = *v as f64;
+                    other[matrix.cols] = *v as f64;
                     others.push(other);
                 }
 
                 println!("{:?}{values:?}{others:?}", matrix.independents);
-                let mut r = matrix
-                    .data
-                    .clone();
+                let mut r = matrix.data.clone();
                 r.extend(others);
 
-                println!("{min} - {:?}", solve_linear_system(
-                    r
-                ));
+                println!("{min} - {:?}", solve_linear_system(r));
             }
         }
         return;
